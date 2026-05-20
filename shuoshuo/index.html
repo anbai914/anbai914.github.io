@@ -1006,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     href="/shuoshuo/"
                     rounded
                     
-                    variant="filled"
+                    active
                     
                 >
                     <mdui-icon slot="icon" name="chat"></mdui-icon>
@@ -1021,31 +1021,227 @@ document.addEventListener('DOMContentLoaded', function() {
 </mdui-navigation-drawer>
     <main class="main">
         <div class="page-transition-container">
-            <div style="min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 40px;">
+            <mdui-navigation-drawer class="sidebar-content" close-on-overlay-click no-animation>
+    <!-- 用户信息卡片 -->
     
-    <mdui-card class="mdui-primary" style="width: 100%; max-width: 400px; padding: 40px 32px;">
-        <div style="text-align: center;">
-            <mdui-typography variant="h2" style="margin-bottom: 16px;">404</mdui-typography>
-            <br>
-            <mdui-typography variant="h6" style="opacity: 0.8;">页面未找到</mdui-typography>
+    <div class="sidebar-user-card">
+        
+            <mdui-avatar class="sidebar-user-avatar" src="https://blog.yizhixiaozhu.top/images/1.png"></mdui-avatar>
+        
+        
+            <div class="sidebar-user-name">system:error</div>
+        
+        
+            <div class="sidebar-user-slogen">长风破浪会有时，直挂云帆济沧海。</div>
+        
         </div>
-    </mdui-card>
-
-    <mdui-card class="mdui-primary" style="width: 100%; max-width: 400px; padding: 32px;">
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-            <mdui-button variant="filled" href="/" full-width>
-                <mdui-icon slot="icon">home</mdui-icon>
-                返回首页
-            </mdui-button>
+    
+    
+    <!-- 导航菜单 -->
+    <mdui-list class="nav-list">
+        
             
-            <mdui-button variant="outlined" onclick="history.back()" full-width>
-                <mdui-icon slot="icon">arrow_back</mdui-icon>
-                返回上页
-            </mdui-button>
-        </div>
-    </mdui-card>
+                <mdui-list-item 
+                    class="nav-item"
+                    href="/"
+                    rounded
+                    
+                    active
+                    
+                >
+                    <mdui-icon slot="icon" name="home"></mdui-icon>
+                    首页
+                </mdui-list-item>
+            
+                <mdui-list-item 
+                    class="nav-item"
+                    href="/archives/"
+                    rounded
+                    
+                    variant="filled"
+                    
+                >
+                    <mdui-icon slot="icon" name="article"></mdui-icon>
+                    文章归档
+                </mdui-list-item>
+            
+                <mdui-list-item 
+                    class="nav-item"
+                    href="/categories/"
+                    rounded
+                    
+                    variant="filled"
+                    
+                >
+                    <mdui-icon slot="icon" name="category"></mdui-icon>
+                    分类
+                </mdui-list-item>
+            
+                <mdui-list-item 
+                    class="nav-item"
+                    href="/tags/"
+                    rounded
+                    
+                    variant="filled"
+                    
+                >
+                    <mdui-icon slot="icon" name="tag"></mdui-icon>
+                    标签
+                </mdui-list-item>
+            
+                <mdui-list-item 
+                    class="nav-item"
+                    href="/about/"
+                    rounded
+                    
+                    variant="filled"
+                    
+                >
+                    <mdui-icon slot="icon" name="person"></mdui-icon>
+                    关于
+                </mdui-list-item>
+            
+                <mdui-list-item 
+                    class="nav-item"
+                    href="/friends/"
+                    rounded
+                    
+                    variant="filled"
+                    
+                >
+                    <mdui-icon slot="icon" name="link"></mdui-icon>
+                    友链
+                </mdui-list-item>
+            
+                <mdui-list-item 
+                    class="nav-item"
+                    href="/shuoshuo/"
+                    rounded
+                    
+                    active
+                    
+                >
+                    <mdui-icon slot="icon" name="chat"></mdui-icon>
+                    说说
+                </mdui-list-item>
+            
+        
+    </mdui-list>
 
-</div>
+
+
+</mdui-navigation-drawer>
+
+    
+
+
+<style>
+.talk-card {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: rgb(var(--mdui-color-surface-container-low));
+    color: rgb(var(--mdui-color-on-surface));
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.talk-card-content {
+    padding: 24px;
+}
+
+.talk-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.talk-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: rgb(var(--mdui-color-primary-container));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.talk-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.talk-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgb(var(--mdui-color-primary-container));
+    color: rgb(var(--mdui-color-on-primary-container));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.talk-avatar-placeholder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.talk-author-name {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.talk-date {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.talk-content {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.talk-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+}
+
+.talk-image {
+    width: 100%;
+    border-radius: 8px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.no-talks {
+    width: 100%;
+    text-align: center;
+    padding: 40px 24px;
+    border-radius: 16px;
+    background-color: rgb(var(--mdui-color-surface-container-low));
+    color: rgb(var(--mdui-color-on-surface-variant));
+}
+</style>
+
+<mdui-layout-main>
+    <div class="articles-container">
+        <!-- 说说列表 -->
+        
+            <div class="no-talks">
+                <mdui-icon name="chat" style="font-size: 3rem; opacity: 0.5; margin-bottom: 16px;"></mdui-icon>
+                <mdui-typography variant="h6">暂无说说</mdui-typography>
+                <mdui-typography variant="body2" style="margin-top: 8px;">还没有发布任何说说</mdui-typography>
+            </div>
+        
+    </div>
+</mdui-layout-main>
+
         </div>
     </main>
 

@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     href="/friends/"
                     rounded
                     
-                    variant="filled"
+                    active
                     
                 >
                     <mdui-icon slot="icon" name="link"></mdui-icon>
@@ -1021,31 +1021,739 @@ document.addEventListener('DOMContentLoaded', function() {
 </mdui-navigation-drawer>
     <main class="main">
         <div class="page-transition-container">
-            <div style="min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 40px;">
-    
-    <mdui-card class="mdui-primary" style="width: 100%; max-width: 400px; padding: 40px 32px;">
-        <div style="text-align: center;">
-            <mdui-typography variant="h2" style="margin-bottom: 16px;">404</mdui-typography>
-            <br>
-            <mdui-typography variant="h6" style="opacity: 0.8;">页面未找到</mdui-typography>
-        </div>
-    </mdui-card>
-
-    <mdui-card class="mdui-primary" style="width: 100%; max-width: 400px; padding: 32px;">
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-            <mdui-button variant="filled" href="/" full-width>
-                <mdui-icon slot="icon">home</mdui-icon>
-                返回首页
-            </mdui-button>
             
-            <mdui-button variant="outlined" onclick="history.back()" full-width>
-                <mdui-icon slot="icon">arrow_back</mdui-icon>
-                返回上页
-            </mdui-button>
-        </div>
+<script src="/js/fancybox.js"></script>
+
+
+<style>
+.post-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.post-card-wide {
+    border-radius: 20px;
+    background-color: rgb(var(--mdui-color-surface-container-low));
+    box-shadow: none;
+}
+
+.post-card-comment {
+    border-radius: 20px;
+    background-color: rgb(var(--mdui-color-surface-container-low));
+    box-shadow: none;
+    padding: 2.5rem;
+}
+
+.post-card-nav {
+    border-radius: 20px;
+    background-color: rgb(var(--mdui-color-surface-container-low));
+    box-shadow: none;
+    padding: 2.5rem;
+}
+
+.markdown-section img,
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.2em auto;
+    object-fit: contain;
+    box-sizing: border-box;
+    border-radius: 12px;
+}
+
+.caption {
+  color: #444;
+  display: block;
+  font-size: 0.9em;
+  margin-top: 0.1em;
+  position: relative;
+  text-align: center;
+}
+
+.article-content {
+    color: rgb(var(--mdui-color-on-surface));
+    line-height: 1.8;
+    font-family: var(--mdui-font-family);
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+    color: rgb(var(--mdui-color-primary));
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+.article-content p {
+    margin-bottom: 1.2em;
+}
+
+.article-content a {
+    color: rgb(var(--mdui-color-primary));
+    text-decoration: none;
+    border-bottom: 1px dashed rgb(var(--mdui-color-primary));
+}
+
+.article-content a:hover {
+    opacity: 0.8;
+}
+
+.article-content code {
+    background-color: rgb(var(--mdui-color-surface-container-high));
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--mdui-font-family-mono);
+    word-break: break-word;
+}
+
+/* 修复代码块样式 - 关键修复 */
+.mdui-code-block {
+    background: rgb(var(--mdui-color-surface-container-high));
+    border-radius: 12px;
+    margin: 1.5em 0;
+    overflow: hidden;
+    font-family: var(--mdui-font-family-mono);
+    width: 100%;
+    box-sizing: border-box;
+    /* 确保代码块不会超出容器 */
+    max-width: 100%;
+}
+
+.mdui-code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgb(var(--mdui-color-surface-container-highest));
+    border-bottom: 1px solid rgb(var(--mdui-color-outline-variant));
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.mdui-code-language {
+    color: rgb(var(--mdui-color-on-surface-variant));
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: var(--mdui-font-family);
+    flex-shrink: 0;
+}
+
+.mdui-code-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.mdui-code-toggle {
+    color: rgb(var(--mdui-color-on-surface-variant));
+    cursor: pointer;
+    transition: color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.mdui-code-toggle:hover {
+    color: rgb(var(--mdui-color-primary));
+}
+
+.mdui-code-copy {
+    color: rgb(var(--mdui-color-on-surface-variant));
+    cursor: pointer;
+    transition: color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.mdui-code-copy:hover {
+    color: rgb(var(--mdui-color-primary));
+}
+
+.mdui-code-copy.copied {
+    color: rgb(var(--mdui-color-success));
+}
+
+/* 关键修复：代码内容区域 */
+.mdui-code-content {
+    position: relative;
+    background: rgb(var(--mdui-color-surface-container-high));
+    width: 100%;
+    box-sizing: border-box;
+    /* 修复滚动问题 */
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    /* 使用 flex 布局：左侧行号列 + 右侧代码内容 */
+    display: flex;
+    align-items: stretch;
+}
+
+/* 关键修复：代码内容本身 */
+.mdui-code-pre {
+    margin: 0;
+    padding: 16px;
+    font-family: var(--mdui-font-family-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: rgb(var(--mdui-color-on-surface));
+    /* 关键：保持代码不换行 */
+    white-space: pre;
+    /* 关键：让内容自然扩展 */
+    display: block;
+    box-sizing: border-box;
+    /* 允许横向滚动，但代码区域使用 flex:1 */
+    flex: 1 1 auto;
+    min-width: 0; /* allow flex to shrink */
+}
+
+/* 行号 gutter */
+.mdui-code-gutter {
+    padding: 12px 8px;
+    background: rgb(var(--mdui-color-surface-container));
+    color: rgb(var(--mdui-color-on-surface-variant));
+    text-align: right;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 0 0 auto;
+}
+
+.mdui-code-gutter .mdui-code-line-number {
+    display: block;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    min-height: 1.5em;
+    padding: 0 4px;
+}
+
+/* 自定义滚动条样式 */
+.mdui-code-content::-webkit-scrollbar {
+    height: 8px;
+}
+
+.mdui-code-content::-webkit-scrollbar-track {
+    background: rgb(var(--mdui-color-surface-container));
+    border-radius: 0 0 4px 4px;
+}
+
+.mdui-code-content::-webkit-scrollbar-thumb {
+    background: rgb(var(--mdui-color-outline-variant));
+    border-radius: 4px;
+}
+
+.mdui-code-content::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--mdui-color-outline));
+}
+
+/* Firefox 滚动条样式 */
+.mdui-code-content {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--mdui-color-outline-variant)) rgb(var(--mdui-color-surface-container));
+}
+
+.mdui-code-block.collapsed .mdui-code-content {
+    display: none;
+}
+
+.mdui-code-block.collapsed .mdui-code-toggle .expand-icon {
+    display: inline;
+}
+
+.mdui-code-block.collapsed .mdui-code-toggle .collapse-icon {
+    display: none;
+}
+
+.mdui-code-block:not(.collapsed) .mdui-code-toggle .expand-icon {
+    display: none;
+}
+
+.mdui-code-block:not(.collapsed) .mdui-code-toggle .collapse-icon {
+    display: inline;
+}
+
+.article-content pre {
+    background-color: rgb(var(--mdui-color-surface-container-high));
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.article-content blockquote {
+    border-left: 4px solid rgb(var(--mdui-color-primary));
+    padding: 8px 16px;
+    margin: 16px 0;
+    background-color: rgb(var(--mdui-color-surface-container));
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.article-content ul,
+.article-content ol {
+    padding-left: 32px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.article-content li {
+    margin-bottom: 8px;
+    word-break: break-word;
+}
+
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 1rem 0;
+}
+
+.nav-button {
+    flex: 1;
+    text-align: center;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: rgb(var(--mdui-color-surface-container));
+    color: rgb(var(--mdui-color-on-surface));
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+.nav-button:hover {
+    background-color: rgb(var(--mdui-color-surface-container-high));
+    transform: translateY(-2px);
+}
+
+.nav-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.nav-button.disabled:hover {
+    background-color: rgb(var(--mdui-color-surface-container));
+    transform: none;
+}
+
+.nav-label {
+    font-size: 0.875rem;
+    color: rgb(var(--mdui-color-on-surface-variant));
+}
+
+.nav-title {
+    font-weight: 500;
+}
+
+/* 平板设备 */
+@media (max-width: 1024px) {
+    .post-container {
+        padding: 2rem 24px;
+        gap: 20px;
+    }
+    
+    .post-card-wide,
+    .post-card-comment,
+    .post-card-nav {
+        padding: 2rem;
+    }
+}
+
+/* 手机设备 */
+@media (max-width: 768px) {
+    .post-container {
+        padding: 24px 16px;
+        gap: 16px;
+    }
+    
+    .post-card-wide {
+        padding: 1.5rem;
+    }
+    
+    .post-card-comment,
+    .post-card-nav {
+        padding: 1.5rem;
+    }
+    
+    .post-navigation {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .mdui-code-header {
+        padding: 10px 12px;
+    }
+    
+    .mdui-code-pre {
+        padding: 12px;
+        font-size: 0.8125rem;
+    }
+    
+    .mdui-code-content::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    /* 移动端代码块特殊处理 */
+    .mdui-code-block {
+        margin: 1em 0;
+        border-radius: 8px;
+    }
+    
+    .article-content {
+        font-size: 0.9375rem;
+    }
+}
+
+/* 小屏手机 */
+@media (max-width: 480px) {
+    .post-container {
+        padding: 20px 12px;
+        gap: 12px;
+    }
+    
+    .post-card-wide,
+    .post-card-comment,
+    .post-card-nav {
+        padding: 1rem;
+        border-radius: 16px;
+    }
+    
+    .mdui-code-pre {
+        padding: 10px;
+        font-size: 0.75rem;
+    }
+    
+    .article-content ul,
+    .article-content ol {
+        padding-left: 24px;
+    }
+    
+    .mdui-code-header {
+        padding: 8px 12px;
+    }
+    
+    .mdui-code-language {
+        font-size: 0.75rem;
+    }
+}
+</style>
+
+<mdui-layout-main>
+    <link rel="stylesheet" href="/fonts/banner/banner.css">
+
+<div class="banner-container">
+    <mdui-card class="banner-title">
+        <div class="banner-title-text1">友链</div>
+        <div class="banner-title-text2"></div>
+
+        
     </mdui-card>
 
+    <mdui-card class="banner-image">
+        <div style="margin: 16px; text-align: center;">
+            <p class="banner-hitokoto" variant="filled">
+                <mdui-icon slot="icon">format_quote</mdui-icon>
+                <a href="#" id="hitokoto_text" style="color: var(--mdui-color-on-surface); text-decoration: none; font-style: italic;">
+                    <span id="hitokoto_inner">获取中...</span><span id="hitokoto_cursor">|</span>
+                </a>
+            </p>
+        </div>
+
+        <script>
+        (function(){
+            function typeText(el, text, speed, cursorEl) {
+                if (!el) return;
+                el.textContent = '';
+                let i = 0;
+                if (cursorEl) cursorEl.style.opacity = '1';
+                function step(){
+                    if (i < text.length) {
+                        el.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(step, speed);
+                    } else {
+                        if (cursorEl) cursorEl.style.opacity = '0';
+                    }
+                }
+                step();
+            }
+
+            function fetchHitokoto(){
+                fetch('https://v1.hitokoto.cn')
+                    .then(function(r){ return r.json(); })
+                    .then(function(data){
+                        var inner = document.getElementById('hitokoto_inner');
+                        var cursor = document.getElementById('hitokoto_cursor');
+                        var link = document.getElementById('hitokoto_text');
+                        if (!inner || !link) return;
+                        if (data && data.hitokoto) {
+                            var text = data.hitokoto + (data.from ? ' — ' + data.from : '');
+                            if (data.uuid) link.href = 'https://hitokoto.cn/?uuid=' + data.uuid;
+                            typeText(inner, text, 40, cursor);
+                        }
+                    })
+                    .catch(function(){ /* ignore errors */ });
+            }
+
+            // 添加简单的光标闪烁样式
+            var _s = document.createElement('style');
+            _s.textContent = '#hitokoto_cursor{display:inline-block;margin-left:6px;opacity:1;transition:opacity .2s}@keyframes _hk{0%{opacity:1}50%{opacity:0}100%{opacity:1}} #hitokoto_cursor{animation:_hk 1s steps(1) infinite}';
+            document.head.appendChild(_s);
+
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                fetchHitokoto();
+            } else {
+                document.addEventListener('DOMContentLoaded', fetchHitokoto);
+            }
+        })();
+        </script>
+    </mdui-card>
 </div>
+
+    <div class="post-container">
+        <!-- 内容卡片 -->
+        <mdui-card variant="filled" class="post-card-wide">
+            <mdui-card-content>
+                <div class="article-content">
+                    
+                </div>
+            </mdui-card-content>
+        </mdui-card>
+
+        <!-- 上一篇/下一篇导航 -->
+        <mdui-card variant="filled" class="post-card-nav">
+            <mdui-card-content>
+                <div class="post-navigation">
+                    
+                        <a class="nav-button disabled">
+                            <span class="nav-label">上一篇</span>
+                            <span class="nav-title">没有了</span>
+                        </a>
+                    
+                    
+                    
+                        <a class="nav-button disabled">
+                            <span class="nav-label">下一篇</span>
+                            <span class="nav-title">没有了</span>
+                        </a>
+                    
+                </div>
+            </mdui-card-content>
+        </mdui-card>
+
+        <!-- 评论卡片 -->
+        <mdui-card variant="filled" class="post-card-comment">
+            <mdui-card-content>
+                <mdui-typography variant="h5" style="margin-bottom: 1.5rem; text-align: center; color: rgb(var(--mdui-color-primary));">
+                    评论
+                </mdui-typography>
+                
+                    
+                        
+<div id="tcomment"></div>
+<script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.min.js"></script>
+<script>
+twikoo.init({
+  envId: 'https://pinglun.yizhixiaozhu.top',
+  el: '#tcomment',
+  // region: 'ap-guangzhou', // 腾讯云环境时需要，Vercel 不需要
+  path: location.pathname,
+  lang: 'zh-CN'
+}).then(function () {
+  console.log('Twikoo 评论系统加载成功');
+}).catch(function (err) {
+  console.error('Twikoo 评论系统加载失败:', err);
+});
+</script>
+
+
+                    
+                
+            </mdui-card-content>
+        </mdui-card>
+    </div>
+</mdui-layout-main>
+
+<script>
+// 代码块功能增强（重构版）
+(function(){
+    function detectLanguage(pre){
+        // 优先考虑 data-language 属性
+        if (pre.dataset && pre.dataset.language) return pre.dataset.language;
+        const code = pre.querySelector('code');
+        const cls = code && code.className ? code.className : '';
+        const m = cls.match(/language-([A-Za-z0-9_\-]+)/) || cls.match(/lang-([A-Za-z0-9_\-]+)/);
+        if (m) return m[1];
+        return 'Code';
+    }
+
+    function makeHeader(language){
+        const header = document.createElement('div');
+        header.className = 'mdui-code-header';
+
+        const langSpan = document.createElement('span');
+        langSpan.className = 'mdui-code-language';
+        langSpan.textContent = language;
+
+        const actions = document.createElement('div');
+        actions.className = 'mdui-code-actions';
+
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'mdui-code-toggle';
+        toggle.setAttribute('aria-label', 'Toggle code');
+        toggle.innerHTML = '<mdui-icon class="collapse-icon" size="small">unfold_less</mdui-icon><mdui-icon class="expand-icon" size="small">unfold_more</mdui-icon>';
+
+        const copy = document.createElement('button');
+        copy.type = 'button';
+        copy.className = 'mdui-code-copy';
+        copy.setAttribute('aria-label', 'Copy code');
+        copy.innerHTML = '<mdui-icon size="small">content_copy</mdui-icon>';
+
+        actions.appendChild(toggle);
+        actions.appendChild(copy);
+
+        header.appendChild(langSpan);
+        header.appendChild(actions);
+        return header;
+    }
+
+    function processPre(pre){
+        if (pre.closest('.mdui-code-block')) return;
+
+        const language = detectLanguage(pre);
+
+        const codeBlock = document.createElement('div');
+        codeBlock.className = 'mdui-code-block';
+
+        const header = makeHeader(language);
+
+        const content = document.createElement('div');
+        content.className = 'mdui-code-content';
+
+        // 移动原始 pre 元素到新的容器，保留任何高亮 markup
+        pre.classList.add('mdui-code-pre');
+
+        // 生成行号 gutter（不包含在复制内容中）
+        try {
+            const codeText = pre.textContent || pre.innerText || '';
+            const lines = codeText.split(/\r\n|\r|\n/);
+            const gutter = document.createElement('div');
+            gutter.className = 'mdui-code-gutter';
+            for (let i = 0; i < lines.length; i++) {
+                const ln = document.createElement('span');
+                ln.className = 'mdui-code-line-number';
+                ln.textContent = (i + 1);
+                gutter.appendChild(ln);
+            }
+            content.appendChild(gutter);
+        } catch (e) {
+            // ignore gutter errors
+        }
+
+        content.appendChild(pre);
+
+        codeBlock.appendChild(header);
+        codeBlock.appendChild(content);
+
+        // 替换原位置（pre 将被移动到新的 content 中）
+        if (pre.parentNode) {
+            pre.parentNode.replaceChild(codeBlock, pre);
+        } else {
+            // 保险回退：尝试查找原来应该替换的位置
+            const sibling = document.querySelector('body');
+            // 最后手段：附加到 body（极少出现）
+            sibling && sibling.appendChild(codeBlock);
+        }
+    }
+
+    function init(){
+        document.querySelectorAll('pre').forEach(processPre);
+
+        // 事件委托：折叠/展开 & 复制
+        document.addEventListener('click', function(e){
+            const toggle = e.target.closest('.mdui-code-toggle');
+            if (toggle) {
+                const block = toggle.closest('.mdui-code-block');
+                block && block.classList.toggle('collapsed');
+                return;
+            }
+
+            const copyBtn = e.target.closest('.mdui-code-copy');
+            if (copyBtn) {
+                const block = copyBtn.closest('.mdui-code-block');
+                if (!block) return;
+                const pre = block.querySelector('.mdui-code-pre');
+                const codeText = pre ? pre.textContent : '';
+
+                // 复制并给出视觉反馈
+                navigator.clipboard && navigator.clipboard.writeText
+                    ? navigator.clipboard.writeText(codeText).then(() => flashCopy(copyBtn))
+                    : fallbackCopy(codeText, copyBtn);
+            }
+        });
+
+        // 初始移动端修复
+        function fixCodeBlocksOnMobile(){
+            document.querySelectorAll('.mdui-code-block').forEach(block => {
+                const content = block.querySelector('.mdui-code-content');
+                const pre = block.querySelector('.mdui-code-pre');
+                if (content && pre) {
+                    content.style.overflowX = 'auto';
+                    pre.style.whiteSpace = 'pre';
+                    pre.style.display = 'inline-block';
+                    pre.style.minWidth = 'min-content';
+                }
+            });
+        }
+
+        function flashCopy(button){
+            const original = button.innerHTML;
+            button.innerHTML = '<mdui-icon size="small" style="color: var(--mdui-color-success)">check</mdui-icon>';
+            button.classList.add('copied');
+            setTimeout(()=>{ button.innerHTML = original; button.classList.remove('copied'); }, 2000);
+        }
+
+        function fallbackCopy(text, button){
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                flashCopy(button);
+            } catch (err) {
+                console.error('Fallback copy failed', err);
+            }
+        }
+
+        fixCodeBlocksOnMobile();
+        window.addEventListener('resize', fixCodeBlocksOnMobile);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
         </div>
     </main>
 
